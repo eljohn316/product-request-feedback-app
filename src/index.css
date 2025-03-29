@@ -18,6 +18,8 @@ body {
   --color-tangering: #f49f85;
   --color-malibu: #62bcfa;
   --color-crimson: #d73737;
+
+  --select-content-shadow: 0 10px 40px -7px rgba(55, 63, 104, 0.3505);
 }
 
 @layer components {

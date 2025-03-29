@@ -1,0 +1,12 @@
+export { default as ArrowUpIcon } from '@/assets/shared/icon-arrow-up.svg?react';
+export { default as ArrowDownIcon } from '@/assets/shared/icon-arrow-down.svg?react';
+export { default as ArrowLeftIcon } from '@/assets/shared/icon-arrow-left.svg?react';
+export { default as CheckIcon } from '@/assets/shared/icon-check.svg?react';
+export { default as CommentsIcon } from '@/assets/shared/icon-comments.svg?react';
+export { default as EditFeedbackIcon } from '@/assets/shared/icon-edit-feedback.svg?react';
+export { default as NewFeedbackIcon } from '@/assets/shared/icon-new-feedback.svg?react';
+export { default as PlusIcon } from '@/assets/shared/icon-plus.svg?react';
+export { default as HamburgerIcon } from '@/assets/shared/mobile/icon-hamburger.svg?react';
+export { default as CloseIcon } from '@/assets/shared/mobile/icon-close.svg?react';
+export { default as SuggestionsIcon } from '@/assets/suggestions/icon-suggestions.svg?react';
+export { default as EmptyIcon } from '@/assets/suggestions/illustration-empty.svg?react';
