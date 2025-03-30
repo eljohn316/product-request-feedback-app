@@ -1,5 +1,6 @@
 @import '@fontsource-variable/jost';
 @import 'tailwindcss';
+@plugin 'tailwindcss-animate';
 
 body {
   font-family: 'Jost Variable', sans-serif;
@@ -19,7 +20,7 @@ body {
   --color-malibu: #62bcfa;
   --color-crimson: #d73737;
 
-  --select-content-shadow: 0 10px 40px -7px rgba(55, 63, 104, 0.3505);
+  --dropdown-content-shadow: 0 10px 40px -7px rgba(55, 63, 104, 0.3505);
 }
 
 @layer components {

@@ -21,8 +21,8 @@ export function DropdownMenuContent({
     <DropdownMenuPrimitive.Portal>
       <DropdownMenuPrimitive.Content
         className={cn(
-          'z-50 max-h-[var(--radix-dropdown-menu-content-available-height)] w-full min-w-64 overflow-x-hidden overflow-y-auto rounded-[0.625rem] shadow-(--select-content-shadow)',
-          'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-dropdown-menu-content-transform-origin]'
+          'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 max-h-[var(--radix-dropdown-menu-content-available-height)] w-full min-w-64 origin-[--radix-dropdown-menu-content-transform-origin] overflow-x-hidden overflow-y-auto rounded-[0.625rem] bg-white shadow-(--dropdown-content-shadow)',
+          className
         )}
         sideOffset={sideOffset}
         align={align}
@@ -38,7 +38,7 @@ export function DropdownMenuRadioGroup({
 }: React.ComponentProps<typeof DropdownMenuPrimitive.RadioGroup>) {
   return (
     <DropdownMenuPrimitive.RadioGroup
-      className={cn('divide-east-bay/15 divide-y')}
+      className={cn('divide-east-bay/15 divide-y', className)}
       {...props}
     />
   );
@@ -52,7 +52,8 @@ export function DropdownMenuRadioItem({
   return (
     <DropdownMenuPrimitive.RadioItem
       className={cn(
-        'text-waikawa-gray hover:text-electric-violet relative flex cursor-pointer items-center px-6 py-3 text-base outline-none'
+        'text-waikawa-gray hover:text-electric-violet relative flex cursor-pointer items-center px-6 py-3 text-base outline-none',
+        className
       )}
       {...props}>
       {children}
