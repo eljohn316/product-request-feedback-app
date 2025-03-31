@@ -2,13 +2,11 @@ import * as React from 'react';
 import { ArrowUpIcon } from '@/components/icons';
 import { cn } from '@/lib/utils';
 
-interface UpvoteButtonProps extends React.ComponentProps<'button'> {}
-
 export function UpvoteButton({
   className,
   children,
   ...props
-}: UpvoteButtonProps) {
+}: React.ComponentProps<'button'>) {
   return (
     <button
       className={cn(

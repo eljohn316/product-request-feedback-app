@@ -71,7 +71,8 @@ export function SelectItem({
   return (
     <SelectPrimitive.Item
       className={cn(
-        'text-waikawa-gray hover:text-electric-violet relative flex cursor-pointer items-center px-6 py-3 text-base outline-none select-none'
+        'text-waikawa-gray hover:text-electric-violet relative flex cursor-pointer items-center px-6 py-3 text-base outline-none select-none',
+        className
       )}
       {...props}>
       <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>

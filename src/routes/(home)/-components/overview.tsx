@@ -1,3 +1,4 @@
+import { Link } from '@tanstack/react-router';
 import { cn } from '@/lib/utils';
 
 export function Overview({ className }: { className?: string }) {
@@ -5,11 +6,11 @@ export function Overview({ className }: { className?: string }) {
     <div className={cn('rounded-[0.625rem] bg-white px-6 py-5', className)}>
       <div className="flex items-center justify-between">
         <p className="heading-3 text-east-bay">Roadmap</p>
-        <a
-          href="#"
-          className="text-royal-blue text-[0.8125rem] leading-0 font-semibold underline">
+        <Link
+          to="/roadmap"
+          className="text-royal-blue text-[0.8125rem] leading-0 font-semibold underline hover:text-[#8397F8]">
           View
-        </a>
+        </Link>
       </div>
       <div className="mt-6 space-y-2">
         <div className="flex items-center justify-between">

@@ -1,9 +1,9 @@
 import { useState } from 'react';
+import background from '@/assets/suggestions/mobile/background-header.png';
 import { CloseIcon, HamburgerIcon } from '@/components/icons';
 import { Sheet, SheetContent, SheetTitle } from '@/components/ui/sheet';
-import background from '@/assets/suggestions/mobile/background-header.png';
-import { Filters } from './filters';
-import { Overview } from './overview';
+import { Filters } from '@routes/home/-components/filters';
+import { Overview } from '@routes/home/-components/overview';
 
 export function MobileHeader() {
   const [open, setOpen] = useState(false);

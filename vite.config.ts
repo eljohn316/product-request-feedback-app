@@ -8,7 +8,8 @@ import { TanStackRouterVite } from '@tanstack/router-plugin/vite';
 export default defineConfig({
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src')
+      '@': path.resolve(__dirname, './src'),
+      '@routes/home': path.resolve(__dirname, './src/routes/(home)')
     }
   },
   plugins: [

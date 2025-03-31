@@ -16,7 +16,8 @@ export function FilterButton({
         active
           ? 'bg-royal-blue text-white'
           : 'bg-zircon text-royal-blue hover:bg-[#CFD7FF]',
-        'cursor-pointer rounded-[0.625rem] px-4 py-[0.3125rem] text-[0.8125rem] font-semibold'
+        'cursor-pointer rounded-[0.625rem] px-4 py-[0.3125rem] text-[0.8125rem] font-semibold',
+        className
       )}
       {...props}
     />

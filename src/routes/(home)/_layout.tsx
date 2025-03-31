@@ -1,12 +1,21 @@
-import { createFileRoute, Outlet } from '@tanstack/react-router';
+import {
+  createFileRoute,
+  Outlet,
+  stripSearchParams
+} from '@tanstack/react-router';
 import { useIsMobile } from '@/hooks/use-is-mobile';
-import { MobileHeader } from './-components/mobile-header';
-import { SuggestionsListHeader } from './-components/suggestions-list-header';
-import { Filters } from './-components/filters';
-import { Overview } from './-components/overview';
-import { TitleCard } from './-components/title-card';
+
+import { searchParamsSchema } from '@routes/home/-lib/schema';
+import { DEFAULT_SEARCH_PARAMS } from '@routes/home/-lib/constants';
+import { MobileHeader } from '@routes/home/-components/mobile-header';
+import { SuggestionsListHeader } from '@routes/home/-components/suggestions-list-header';
+import { Filters } from '@routes/home/-components/filters';
+import { Overview } from '@routes/home/-components/overview';
+import { TitleCard } from '@routes/home/-components/title-card';
 
 export const Route = createFileRoute('/(home)/_layout')({
+  validateSearch: searchParamsSchema,
+  search: { middlewares: [stripSearchParams(DEFAULT_SEARCH_PARAMS)] },
   component: RouteComponent
 });
 
