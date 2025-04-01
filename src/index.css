@@ -28,7 +28,7 @@ body {
     font-size: 1.5rem; /* 24px */
     font-weight: 700;
     line-height: 2.1875rem; /* 35px (2.1875 * 16) */
-    letter-spacing: 0.020625rem;
+    letter-spacing: -0.020625rem; /* -33px */
   }
 
   .heading-2 {
