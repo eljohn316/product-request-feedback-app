@@ -1,0 +1,25 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "NODE_ENV=production node dist/index.js",
+    "build:code": "tsc && tsc-alias",
+    "build:kill-dist": "rimraf dist",
+    "build": "pnpm build:kill-dist && pnpm build:code",
+    "lint": "tsc --noEmit",
+    "dev": "NODE_ENV=development tsx watch --clear-screen=false --env-file=.env src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.6.5",
+  "devDependencies": {
+    "@types/node": "^22.13.17",
+    "rimraf": "^6.0.1",
+    "tsc-alias": "^1.8.13",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2"
+  }
+}
