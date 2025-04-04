@@ -16,6 +16,8 @@ export const CATEGORY_VALUES = [
   'feature'
 ] as const;
 
+export type CategoryValue = (typeof CATEGORY_VALUES)[number];
+
 export const SORT_OPTIONS = [
   { value: 'most-upvotes', label: 'Most Upvotes' },
   { value: 'least-upvotes', label: 'Least Upvotes' },
@@ -29,6 +31,8 @@ export const SORT_OPTION_VALUES = [
   'most-comments',
   'least-comments'
 ] as const;
+
+export type SortOptionValue = (typeof SORT_OPTION_VALUES)[number];
 
 export const DEFAULT_SEARCH_PARAMS = {
   category: 'all',

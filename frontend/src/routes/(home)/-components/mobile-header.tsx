@@ -13,7 +13,7 @@ export function MobileHeader() {
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetContent className="space-y-6">
           <SheetTitle>Mobile sidebar</SheetTitle>
-          <Filters />
+          <Filters onCloseSheet={setOpen} />
           <Overview />
         </SheetContent>
       </Sheet>
