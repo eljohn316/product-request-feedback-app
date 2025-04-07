@@ -9,7 +9,11 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@routes/home': path.resolve(__dirname, './src/routes/(home)')
+      '@routes/home': path.resolve(__dirname, './src/routes/(home)'),
+      '@routes/product-request': path.resolve(
+        __dirname,
+        './src/routes/(product-request)'
+      )
     }
   },
   plugins: [

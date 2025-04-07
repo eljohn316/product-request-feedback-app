@@ -26,7 +26,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
-      "@routes/home/*": ["src/routes/(home)/*"]
+      "@routes/home/*": ["src/routes/(home)/*"],
+      "@routes/product-request/*": ["src/routes/(product-request)/*"]
     }
   },
   "include": ["src"]
