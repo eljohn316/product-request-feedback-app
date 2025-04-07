@@ -1,4 +1,4 @@
-import { query } from 'express-validator';
+import { param, query } from 'express-validator';
 import {
   CATEGORIES,
   SORT_OPTIONS,
@@ -41,4 +41,8 @@ export const getAllProductRequestsValidations = [
     })
     .trim()
     .escape()
+];
+
+export const getProductRequestValidations = [
+  param('productId').exists().withMessage("Missing required parameter: 'productId'")
 ];

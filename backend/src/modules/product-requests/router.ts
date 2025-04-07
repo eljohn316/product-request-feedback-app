@@ -9,5 +9,10 @@ router.get(
   validations.getAllProductRequestsValidations,
   handlers.getAllProductRequestsHandler
 );
+router.get(
+  '/:productId',
+  validations.getProductRequestValidations,
+  handlers.getProductRequestHandler
+);
 
 export default router;

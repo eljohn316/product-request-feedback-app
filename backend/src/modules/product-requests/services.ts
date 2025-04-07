@@ -5,6 +5,7 @@ import {
   type Status
 } from '@/modules/product-requests/constants';
 import { parseOrderSearchParam } from '@/modules/product-requests/helpers';
+import { NotFoundError } from '@/utils/errors';
 
 type GetAllProductsRequestsOptions = {
   category?: Categories;
@@ -39,4 +40,28 @@ export const getAllProductsRequests = async (opts: GetAllProductsRequestsOptions
   });
 
   return productRequests;
+};
+
+export const getProductRequest = async (productId: string) => {
+  const productRequest = await db.productRequest.findUnique({
+    where: {
+      id: productId
+    },
+    select: {
+      id: true,
+      title: true,
+      category: true,
+      description: true,
+      upvotes: true,
+      _count: {
+        select: {
+          comments: true
+        }
+      }
+    }
+  });
+
+  if (!productRequest) throw new NotFoundError('Product request not found');
+
+  return productRequest;
 };
