@@ -1,6 +1,6 @@
 import { Skeleton } from '@/components/ui/skeleton';
 
-export function ProductRequestSkeleton() {
+export function ProductRequestCardSkeleton() {
   return (
     <div className="rounded-[0.625rem] bg-white p-6 md:flex md:px-8 md:py-7">
       <div className="hidden md:mr-10 md:block md:flex-none">

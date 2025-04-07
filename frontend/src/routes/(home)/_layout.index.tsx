@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
+import { ProductRequestCardSkeleton } from '@/components/product-request-card-skeleton';
 import { ProductRequestItem } from '@routes/home/-components/product-request-item';
-import { ProductRequestSkeleton } from '@routes/home/-components/product-request-skeleton';
 import { ProductRequestEmpty } from '@routes/home/-components/product-request-empty';
 import {
   useProductRequests,
@@ -42,10 +42,10 @@ function RouteComponent() {
 function PendingComponent() {
   return (
     <div className="space-y-4">
-      <ProductRequestSkeleton />
-      <ProductRequestSkeleton />
-      <ProductRequestSkeleton />
-      <ProductRequestSkeleton />
+      <ProductRequestCardSkeleton />
+      <ProductRequestCardSkeleton />
+      <ProductRequestCardSkeleton />
+      <ProductRequestCardSkeleton />
     </div>
   );
 }
