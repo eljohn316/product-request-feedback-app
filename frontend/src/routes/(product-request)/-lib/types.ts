@@ -10,24 +10,23 @@ export type ProductRequest = {
   };
 };
 
+export type User = {
+  id: string;
+  image: string;
+  name: string;
+  username: string;
+};
+
+export type Reply = {
+  id: string;
+  content: string;
+  replyingTo: string;
+  user: User;
+};
+
 export type Comment = {
   id: string;
   content: string;
-  user: {
-    id: string;
-    image: string;
-    name: string;
-    username: string;
-  };
-  replies: {
-    id: string;
-    content: string;
-    replyingTo: string;
-    user: {
-      id: string;
-      image: string;
-      name: string;
-      username: string;
-    };
-  }[];
+  user: User;
+  replies: Reply[];
 };

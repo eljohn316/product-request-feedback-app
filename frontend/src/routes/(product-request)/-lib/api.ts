@@ -1,7 +1,10 @@
 import { isAxiosError } from 'axios';
 import { axios } from '@/lib/axios';
 import { NotFoundError } from '@/lib/errors';
-import { type ProductRequest } from '@routes/product-request/-lib/types';
+import {
+  type Comment,
+  type ProductRequest
+} from '@routes/product-request/-lib/types';
 
 export const getProductRequest = async (productId: string) => {
   try {
@@ -21,4 +24,12 @@ export const getProductRequest = async (productId: string) => {
 
     throw error;
   }
+};
+
+export const getProductRequestComments = async (productId: string) => {
+  const response = await axios.get<{ comments: Comment[] }>(
+    `/comments/${productId}`
+  );
+
+  return response.data.comments;
 };

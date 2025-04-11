@@ -9,15 +9,22 @@ import { ProductRequestCard } from '@/components/product-request-card';
 import { ProductRequestCardSkeleton } from '@/components/product-request-card-skeleton';
 import {
   useProductRequest,
-  productRequestQueryOptions
+  productRequestQueryOptions,
+  productRequestCommentsQueryOptions
 } from '@routes/product-request/-hooks/use-product-request';
+import { ProductRequestComments } from '@routes/product-request/-components/product-request-comments';
+import { ProductRequestCommentsSkeleton } from '@routes/product-request/-components/product-request-comments-skeleton';
+import { CommentForm } from '@routes/product-request/-components/comment-form';
 import { NotFoundError } from '@/lib/errors';
 
 export const Route = createFileRoute('/(product-request)/_layout/$id')({
   loader: ({ context, params }) => {
     const { queryClient } = context;
     const { id } = params;
-    queryClient.ensureQueryData(productRequestQueryOptions(id));
+    Promise.all([
+      queryClient.ensureQueryData(productRequestQueryOptions(id)),
+      queryClient.ensureQueryData(productRequestCommentsQueryOptions(id))
+    ]);
   },
   component: RouteComponent,
   pendingComponent: PendingComponent,
@@ -25,7 +32,7 @@ export const Route = createFileRoute('/(product-request)/_layout/$id')({
 });
 
 function RouteComponent() {
-  const productRequest = useProductRequest();
+  const { productRequest, comments } = useProductRequest();
 
   function handleUpvote() {
     console.log('Handle upvote here');
@@ -37,6 +44,8 @@ function RouteComponent() {
         productRequest={productRequest}
         onUpvote={handleUpvote}
       />
+      <ProductRequestComments comments={comments} />
+      <CommentForm />
     </div>
   );
 }
@@ -45,6 +54,7 @@ function PendingComponent() {
   return (
     <div className="space-y-6">
       <ProductRequestCardSkeleton />
+      <ProductRequestCommentsSkeleton />
     </div>
   );
 }

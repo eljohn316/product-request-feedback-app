@@ -1,11 +1,20 @@
-import { queryOptions, useSuspenseQuery } from '@tanstack/react-query';
+import { queryOptions, useSuspenseQueries } from '@tanstack/react-query';
 import { useParams } from '@tanstack/react-router';
-import { getProductRequest } from '@routes/product-request/-lib/api';
+import {
+  getProductRequest,
+  getProductRequestComments
+} from '@routes/product-request/-lib/api';
 
 export const productRequestQueryOptions = (productRequestId: string) =>
   queryOptions({
-    queryKey: [productRequestId],
+    queryKey: [productRequestId, 'product-request'],
     queryFn: () => getProductRequest(productRequestId)
+  });
+
+export const productRequestCommentsQueryOptions = (productRequestId: string) =>
+  queryOptions({
+    queryKey: [productRequestId, 'comments'],
+    queryFn: () => getProductRequestComments(productRequestId)
   });
 
 export function useProductRequest() {
@@ -14,9 +23,15 @@ export function useProductRequest() {
     select: (params) => params.id
   });
 
-  const { data } = useSuspenseQuery(
-    productRequestQueryOptions(productRequestId)
-  );
+  const {
+    '0': { data: productRequest },
+    '1': { data: comments }
+  } = useSuspenseQueries({
+    queries: [
+      productRequestQueryOptions(productRequestId),
+      productRequestCommentsQueryOptions(productRequestId)
+    ]
+  });
 
-  return data;
+  return { productRequest, comments };
 }
