@@ -13,7 +13,8 @@ export default defineConfig({
       '@routes/product-request': path.resolve(
         __dirname,
         './src/routes/(product-request)'
-      )
+      ),
+      '@routes/new': path.resolve(__dirname, './src/routes/new')
     }
   },
   plugins: [

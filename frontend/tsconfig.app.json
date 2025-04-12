@@ -27,7 +27,8 @@
     "paths": {
       "@/*": ["src/*"],
       "@routes/home/*": ["src/routes/(home)/*"],
-      "@routes/product-request/*": ["src/routes/(product-request)/*"]
+      "@routes/product-request/*": ["src/routes/(product-request)/*"],
+      "@routes/new/*": ["src/routes/new/*"]
     }
   },
   "include": ["src"]

@@ -19,12 +19,13 @@ export function CommentForm() {
         placeholder="Type your comment here"
         value={characters}
         onChange={(e) => setCharacters(e.target.value)}
+        rows={1}
         maxLength={MAX_CHARACTERS}
       />
       <div className="mt-4 flex items-center justify-between">
         <p className="text-waikawa-gray text-[0.8125rem] md:text-[0.9375rem]">
           {charactersLeft} {charactersLeft === 1 ? 'character' : 'characters'}{' '}
-          long
+          left
         </p>
         <Button type="submit" fill="violet">
           Post Comment

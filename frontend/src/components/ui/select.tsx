@@ -23,11 +23,11 @@ export function SelectTrigger({
       )}
       {...props}>
       {children}
-      <SelectPrimitive.Icon asChild>
-        <>
-          <ArrowDownIcon className="text-royal-blue group-data-[state=open]:hidden" />
-          <ArrowUpIcon className="text-royal-blue group-data-[state=closed]:hidden" />
-        </>
+      <SelectPrimitive.Icon className="group-data-[state=open]:hidden">
+        <ArrowDownIcon className="text-royal-blue" />
+      </SelectPrimitive.Icon>
+      <SelectPrimitive.Icon className="group-data-[state=closed]:hidden">
+        <ArrowUpIcon className="text-royal-blue" />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
   );
