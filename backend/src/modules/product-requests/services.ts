@@ -6,6 +6,7 @@ import {
 } from '@/modules/product-requests/constants';
 import { parseOrderSearchParam } from '@/modules/product-requests/helpers';
 import { NotFoundError } from '@/utils/errors';
+import { Prisma } from '@prisma/client';
 
 type GetAllProductsRequestsOptions = {
   category?: Categories;
@@ -62,6 +63,31 @@ export const getProductRequest = async (productId: string) => {
   });
 
   if (!productRequest) throw new NotFoundError('Product request not found');
+
+  return productRequest;
+};
+
+export const createNewProductRequest = async (payload: Prisma.ProductRequestCreateInput) => {
+  const productRequest = await db.productRequest.create({
+    data: {
+      title: payload.title,
+      category: payload.category,
+      description: payload.description,
+      status: payload.status
+    },
+    select: {
+      id: true,
+      title: true,
+      category: true,
+      description: true,
+      upvotes: true,
+      _count: {
+        select: {
+          comments: true
+        }
+      }
+    }
+  });
 
   return productRequest;
 };

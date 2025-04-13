@@ -1,4 +1,4 @@
-import { param, query } from 'express-validator';
+import { body, param, query } from 'express-validator';
 import {
   CATEGORIES,
   SORT_OPTIONS,
@@ -7,6 +7,7 @@ import {
   type SortOptions,
   type Status
 } from '@/modules/product-requests/constants';
+import { validationResultHandler } from '@/middlewares/validation-handler';
 
 export const getAllProductRequestsValidations = [
   query('category')
@@ -45,4 +46,20 @@ export const getAllProductRequestsValidations = [
 
 export const getProductRequestValidations = [
   param('productId').exists().withMessage("Missing required parameter: 'productId'")
+];
+
+export const createNewProductRequestValidations = [
+  body('title').exists({ values: 'falsy' }).withMessage('Title is required'),
+  body('category')
+    .exists({ values: 'falsy' })
+    .withMessage('Category is required')
+    .bail()
+    .isIn(CATEGORIES)
+    .withMessage(`Invalid value. Allowed values are ${CATEGORIES.join(', ')}`),
+  body('description').exists({ values: 'falsy' }).withMessage('Description is required'),
+  body('status')
+    .default('suggestion')
+    .isIn(STATUS)
+    .withMessage(`Invalid value. Allowed values are ${STATUS.join(', ')}`),
+  validationResultHandler
 ];

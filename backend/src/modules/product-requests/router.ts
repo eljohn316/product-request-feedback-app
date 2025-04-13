@@ -14,5 +14,10 @@ router.get(
   validations.getProductRequestValidations,
   handlers.getProductRequestHandler
 );
+router.post(
+  '/',
+  validations.createNewProductRequestValidations,
+  handlers.createNewProductRequestHandler
+);
 
 export default router;

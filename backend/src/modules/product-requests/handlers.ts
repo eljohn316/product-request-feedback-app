@@ -5,7 +5,11 @@ import {
   type SortOptions,
   type Status
 } from '@/modules/product-requests/constants';
-import { getAllProductsRequests, getProductRequest } from '@/modules/product-requests/services';
+import {
+  createNewProductRequest,
+  getAllProductsRequests,
+  getProductRequest
+} from '@/modules/product-requests/services';
 
 type ProductRequestSearchParams = {
   category?: Categories;
@@ -15,7 +19,6 @@ type ProductRequestSearchParams = {
 
 export const getAllProductRequestsHandler = async (req: Request, res: Response) => {
   const { category, sort, status } = matchedData<ProductRequestSearchParams>(req);
-
   const productRequests = await getAllProductsRequests({ category, sort, status });
 
   res.status(200).json({
@@ -23,10 +26,27 @@ export const getAllProductRequestsHandler = async (req: Request, res: Response) 
   });
 };
 
-export const getProductRequestHandler = async (req: Request, res: Response) => {
-  const { productId } = matchedData<{ productId: string }>(req);
+type GetProductRequestArgs = {
+  productId: string;
+};
 
+export const getProductRequestHandler = async (req: Request, res: Response) => {
+  const { productId } = matchedData<GetProductRequestArgs>(req);
   const productRequest = await getProductRequest(productId);
 
   res.json({ productRequest });
+};
+
+type CreateNewProductRequestArgs = {
+  title: string;
+  category: string;
+  description: string;
+  status: string;
+};
+
+export const createNewProductRequestHandler = async (req: Request, res: Response) => {
+  const { title, category, description, status } = matchedData<CreateNewProductRequestArgs>(req);
+  const productRequest = await createNewProductRequest({ title, category, description, status });
+
+  res.status(201).json({ productRequest });
 };
