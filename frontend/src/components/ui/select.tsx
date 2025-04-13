@@ -18,7 +18,7 @@ export function SelectTrigger({
   return (
     <SelectPrimitive.Trigger
       className={cn(
-        'bg-white-lilac text-east-bay focus-visible:border-royal-blue group data-[state=open]:border-royal-blue flex w-full cursor-pointer items-center justify-between rounded-[0.3125rem] border border-transparent px-6 py-[0.8125rem] text-[0.9375rem] whitespace-nowrap outline-none',
+        'bg-white-lilac text-east-bay focus-visible:border-royal-blue group data-[state=open]:border-royal-blue flex w-full cursor-pointer items-center justify-between rounded-[0.3125rem] border border-transparent px-6 py-[0.8125rem] text-[0.9375rem] whitespace-nowrap outline-none disabled:cursor-not-allowed',
         className
       )}
       {...props}>
@@ -71,7 +71,7 @@ export function SelectItem({
   return (
     <SelectPrimitive.Item
       className={cn(
-        'text-waikawa-gray hover:text-electric-violet relative flex cursor-pointer items-center px-6 py-3 text-base outline-none select-none',
+        'text-waikawa-gray hover:text-electric-violet relative flex cursor-pointer items-center px-6 py-3 text-base select-none',
         className
       )}
       {...props}>
