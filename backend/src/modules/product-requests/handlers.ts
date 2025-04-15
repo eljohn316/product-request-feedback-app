@@ -8,7 +8,8 @@ import {
 import {
   createNewProductRequest,
   getAllProductsRequests,
-  getProductRequest
+  getProductRequest,
+  updateProductRequest
 } from '@/modules/product-requests/services';
 
 type ProductRequestSearchParams = {
@@ -49,4 +50,25 @@ export const createNewProductRequestHandler = async (req: Request, res: Response
   const productRequest = await createNewProductRequest({ title, category, description, status });
 
   res.status(201).json({ productRequest });
+};
+
+export const updateProductRequestHandler = async (req: Request, res: Response) => {
+  const { productId, title, category, status, description, upvotes } = matchedData<{
+    productId: string;
+    title?: string;
+    category?: string;
+    upvotes?: number;
+    status?: string;
+    description?: string;
+  }>(req);
+
+  const productRequest = await updateProductRequest(productId, {
+    title,
+    category,
+    upvotes,
+    status,
+    description
+  });
+
+  res.status(200).json({ productRequest });
 };

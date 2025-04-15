@@ -74,3 +74,29 @@ export const createNewProductRequest = async ({
 
   return response.data.productRequest;
 };
+
+export type UpdateProductRequestArgs = Partial<{
+  title: string;
+  category: string;
+  upvotes: number;
+  status: string;
+  description: string;
+}>;
+
+export const updateProductRequest = async (
+  productId: string,
+  payload: UpdateProductRequestArgs
+) => {
+  const response = await axios.patch<{ productRequest: ProductRequest }>(
+    `/product-requests/${productId}`,
+    {
+      title: payload.title,
+      category: payload.category,
+      upvotes: payload.upvotes,
+      status: payload.status,
+      description: payload.description
+    }
+  );
+
+  return response.data.productRequest;
+};

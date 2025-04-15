@@ -63,3 +63,13 @@ export const createNewProductRequestValidations = [
     .withMessage(`Invalid value. Allowed values are ${STATUS.join(', ')}`),
   validationResultHandler
 ];
+
+export const updateProductRequestValidations = [
+  param('productId').exists().withMessage("Missing required parameter: 'productId'"),
+  body('title').optional({ values: 'falsy' }),
+  body('category').optional({ values: 'falsy' }),
+  body('upvotes').optional({ values: 'falsy' }).toInt(),
+  body('status').optional({ values: 'falsy' }),
+  body('description').optional({ values: 'falsy' }),
+  validationResultHandler
+];

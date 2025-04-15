@@ -21,6 +21,7 @@ import {
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import type { ProductRequest, Category, Status } from '@/lib/types';
+import { useUpdateProductRequest } from '@routes/edit-product-request/-hooks/use-update-product-request';
 
 const editProductRequestSchema = z.object({
   title: z.string().min(1, { message: "Can't be empty" }),
@@ -47,15 +48,24 @@ export function EditProductRequestForm({
     }
   });
 
+  const { mutate: update, isPending, error } = useUpdateProductRequest();
+
   function handleEditProductRequest(values: EditProductRequest) {
-    console.log(values);
+    update({
+      title: values.title,
+      category: values.category,
+      status: values.status,
+      description: values.detail
+    });
   }
 
   return (
     <>
-      {/* <div className="bg-crimson/10 text-crimson mb-6 rounded-[0.625rem] px-5 py-4 text-[0.8125rem] md:text-[0.9375rem]">
-        Internal server error. Please try again later
-      </div> */}
+      {error && (
+        <div className="bg-crimson/10 text-crimson mb-6 rounded-[0.625rem] px-5 py-4 text-[0.8125rem] md:text-[0.9375rem]">
+          Internal server error. Please try again later
+        </div>
+      )}
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleEditProductRequest)}>
@@ -72,7 +82,11 @@ export function EditProductRequestForm({
                     </FormDescription>
                   </div>
                   <FormControl>
-                    <TextareaInput className="mt-4" {...field} />
+                    <TextareaInput
+                      className="mt-4"
+                      disabled={isPending}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage className="mt-1" />
                 </FormItem>
@@ -94,7 +108,7 @@ export function EditProductRequestForm({
                     onValueChange={field.onChange}
                     defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger className="mt-4">
+                      <SelectTrigger className="mt-4" disabled={isPending}>
                         <SelectValue />
                       </SelectTrigger>
                     </FormControl>
@@ -124,7 +138,7 @@ export function EditProductRequestForm({
                     onValueChange={field.onChange}
                     defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger className="mt-4">
+                      <SelectTrigger className="mt-4" disabled={isPending}>
                         <SelectValue />
                       </SelectTrigger>
                     </FormControl>
@@ -153,7 +167,11 @@ export function EditProductRequestForm({
                     </FormDescription>
                   </div>
                   <FormControl>
-                    <TextareaInput className="mt-4" {...field} />
+                    <TextareaInput
+                      className="mt-4"
+                      disabled={isPending}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage className="mt-1" />
                 </FormItem>
@@ -161,16 +179,21 @@ export function EditProductRequestForm({
             />
           </div>
           <div className="mt-10 flex flex-col gap-y-4 sm:mt-8 sm:flex-row-reverse sm:gap-x-4 sm:gap-y-0">
-            <Button type="submit" fill="violet">
-              Save changes
+            <Button type="submit" fill="violet" disabled={isPending}>
+              {isPending ? 'Saving changes' : 'Save changes'}
             </Button>
             <Button
               type="button"
               fill="eastbay"
+              disabled={isPending}
               onClick={() => navigate({ to: '..' })}>
               Cancel
             </Button>
-            <Button type="button" fill="crimson" className="sm:mr-auto">
+            <Button
+              type="button"
+              fill="crimson"
+              className="sm:mr-auto"
+              disabled={isPending}>
               Delete
             </Button>
           </div>

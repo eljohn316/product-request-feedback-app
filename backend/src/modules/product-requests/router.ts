@@ -19,5 +19,10 @@ router.post(
   validations.createNewProductRequestValidations,
   handlers.createNewProductRequestHandler
 );
+router.patch(
+  '/:productId',
+  validations.updateProductRequestValidations,
+  handlers.updateProductRequestHandler
+);
 
 export default router;

@@ -92,3 +92,27 @@ export const createNewProductRequest = async (payload: Prisma.ProductRequestCrea
 
   return productRequest;
 };
+
+export const updateProductRequest = async (
+  productId: string,
+  payload: Prisma.ProductRequestUpdateInput
+) => {
+  const productRequest = await db.productRequest.update({
+    where: { id: productId },
+    data: payload,
+    select: {
+      id: true,
+      title: true,
+      category: true,
+      description: true,
+      upvotes: true,
+      _count: {
+        select: {
+          comments: true
+        }
+      }
+    }
+  });
+
+  return productRequest;
+};
