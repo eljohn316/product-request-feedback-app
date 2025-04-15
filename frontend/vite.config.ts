@@ -14,7 +14,11 @@ export default defineConfig({
         __dirname,
         './src/routes/(product-request)'
       ),
-      '@routes/new': path.resolve(__dirname, './src/routes/new')
+      '@routes/new': path.resolve(__dirname, './src/routes/new'),
+      '@routes/edit-product-request': path.resolve(
+        __dirname,
+        './src/routes/(edit-product-request)'
+      )
     }
   },
   plugins: [

@@ -30,3 +30,7 @@ export type Comment = {
   user: User;
   replies: Reply[];
 };
+
+export type Category = 'feature' | 'ui' | 'ux' | 'enhancement' | 'bug';
+
+export type Status = 'suggestion' | 'planned' | 'in-progress' | 'live';

@@ -54,6 +54,7 @@ export const getProductRequest = async (productId: string) => {
       category: true,
       description: true,
       upvotes: true,
+      status: true,
       _count: {
         select: {
           comments: true

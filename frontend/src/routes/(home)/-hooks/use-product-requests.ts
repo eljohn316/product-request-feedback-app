@@ -1,10 +1,7 @@
 import { queryOptions, useSuspenseQuery } from '@tanstack/react-query';
 import { useSearch } from '@tanstack/react-router';
-import {
-  type SortOptionValue,
-  type CategoryValue
-} from '@routes/home/-lib/constants';
-import { getAllProductRequests } from '@routes/home/-lib/api';
+import { type SortOptionValue, type CategoryValue } from '@/constants';
+import { getAllProductRequests } from '@/api/product-request';
 
 type ProductRequestsOptions = {
   sort: SortOptionValue;

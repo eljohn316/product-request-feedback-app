@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import { type ProductRequest } from '@routes/home/-lib/types';
+import { type ProductRequest } from '@/lib/types';
 import { ProductRequestCard } from '@/components/product-request-card';
 
 interface ProductRequestItemProps {

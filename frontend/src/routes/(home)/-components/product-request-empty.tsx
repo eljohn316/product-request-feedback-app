@@ -1,7 +1,7 @@
 import { Link, useSearch } from '@tanstack/react-router';
-import { EmptyIcon } from '@/components/icons';
+import { ArrowLeftIcon, EmptyIcon } from '@/components/icons';
 import { Button } from '@/components/ui/button';
-import { CATEGORIES } from '@routes/home/-lib/constants';
+import { CATEGORIES } from '@/constants';
 
 export function ProductRequestEmpty() {
   const { category } = useSearch({ from: '/(home)/_layout' });
@@ -19,6 +19,12 @@ export function ProductRequestEmpty() {
             </span>
           </h2>
         </div>
+        <Link
+          to="/"
+          className="text-royal-blue mt-8 inline-flex items-center gap-x-4 text-sm font-medium hover:underline">
+          <ArrowLeftIcon />
+          Go to Home
+        </Link>
       </div>
     );
 

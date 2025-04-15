@@ -17,14 +17,16 @@ import { Route as RoadmapIndexImport } from './routes/roadmap/index'
 import { Route as NewIndexImport } from './routes/new/index'
 import { Route as productRequestLayoutImport } from './routes/(product-request)/_layout'
 import { Route as homeLayoutImport } from './routes/(home)/_layout'
+import { Route as editProductRequestLayoutImport } from './routes/(edit-product-request)/_layout'
 import { Route as homeLayoutIndexImport } from './routes/(home)/_layout.index'
 import { Route as productRequestLayoutIdImport } from './routes/(product-request)/_layout.$id'
-import { Route as editProductRequestIdEditImport } from './routes/(edit-product-request)/$id.edit'
+import { Route as editProductRequestLayoutIdEditImport } from './routes/(edit-product-request)/_layout.$id.edit'
 
 // Create Virtual Routes
 
 const productRequestImport = createFileRoute('/(product-request)')()
 const homeImport = createFileRoute('/(home)')()
+const editProductRequestImport = createFileRoute('/(edit-product-request)')()
 
 // Create/Update Routes
 
@@ -35,6 +37,11 @@ const productRequestRoute = productRequestImport.update({
 
 const homeRoute = homeImport.update({
   id: '/(home)',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const editProductRequestRoute = editProductRequestImport.update({
+  id: '/(edit-product-request)',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -60,6 +67,11 @@ const homeLayoutRoute = homeLayoutImport.update({
   getParentRoute: () => homeRoute,
 } as any)
 
+const editProductRequestLayoutRoute = editProductRequestLayoutImport.update({
+  id: '/_layout',
+  getParentRoute: () => editProductRequestRoute,
+} as any)
+
 const homeLayoutIndexRoute = homeLayoutIndexImport.update({
   id: '/',
   path: '/',
@@ -72,16 +84,31 @@ const productRequestLayoutIdRoute = productRequestLayoutIdImport.update({
   getParentRoute: () => productRequestLayoutRoute,
 } as any)
 
-const editProductRequestIdEditRoute = editProductRequestIdEditImport.update({
-  id: '/(edit-product-request)/$id/edit',
-  path: '/$id/edit',
-  getParentRoute: () => rootRoute,
-} as any)
+const editProductRequestLayoutIdEditRoute =
+  editProductRequestLayoutIdEditImport.update({
+    id: '/$id/edit',
+    path: '/$id/edit',
+    getParentRoute: () => editProductRequestLayoutRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/(edit-product-request)': {
+      id: '/(edit-product-request)'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof editProductRequestImport
+      parentRoute: typeof rootRoute
+    }
+    '/(edit-product-request)/_layout': {
+      id: '/(edit-product-request)/_layout'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof editProductRequestLayoutImport
+      parentRoute: typeof editProductRequestRoute
+    }
     '/(home)': {
       id: '/(home)'
       path: '/'
@@ -124,13 +151,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RoadmapIndexImport
       parentRoute: typeof rootRoute
     }
-    '/(edit-product-request)/$id/edit': {
-      id: '/(edit-product-request)/$id/edit'
-      path: '/$id/edit'
-      fullPath: '/$id/edit'
-      preLoaderRoute: typeof editProductRequestIdEditImport
-      parentRoute: typeof rootRoute
-    }
     '/(product-request)/_layout/$id': {
       id: '/(product-request)/_layout/$id'
       path: '/$id'
@@ -145,10 +165,42 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof homeLayoutIndexImport
       parentRoute: typeof homeLayoutImport
     }
+    '/(edit-product-request)/_layout/$id/edit': {
+      id: '/(edit-product-request)/_layout/$id/edit'
+      path: '/$id/edit'
+      fullPath: '/$id/edit'
+      preLoaderRoute: typeof editProductRequestLayoutIdEditImport
+      parentRoute: typeof editProductRequestLayoutImport
+    }
   }
 }
 
 // Create and export the route tree
+
+interface editProductRequestLayoutRouteChildren {
+  editProductRequestLayoutIdEditRoute: typeof editProductRequestLayoutIdEditRoute
+}
+
+const editProductRequestLayoutRouteChildren: editProductRequestLayoutRouteChildren =
+  {
+    editProductRequestLayoutIdEditRoute: editProductRequestLayoutIdEditRoute,
+  }
+
+const editProductRequestLayoutRouteWithChildren =
+  editProductRequestLayoutRoute._addFileChildren(
+    editProductRequestLayoutRouteChildren,
+  )
+
+interface editProductRequestRouteChildren {
+  editProductRequestLayoutRoute: typeof editProductRequestLayoutRouteWithChildren
+}
+
+const editProductRequestRouteChildren: editProductRequestRouteChildren = {
+  editProductRequestLayoutRoute: editProductRequestLayoutRouteWithChildren,
+}
+
+const editProductRequestRouteWithChildren =
+  editProductRequestRoute._addFileChildren(editProductRequestRouteChildren)
 
 interface homeLayoutRouteChildren {
   homeLayoutIndexRoute: typeof homeLayoutIndexRoute
@@ -199,64 +251,68 @@ export interface FileRoutesByFullPath {
   '/': typeof homeLayoutIndexRoute
   '/new': typeof NewIndexRoute
   '/roadmap': typeof RoadmapIndexRoute
-  '/$id/edit': typeof editProductRequestIdEditRoute
   '/$id': typeof productRequestLayoutIdRoute
+  '/$id/edit': typeof editProductRequestLayoutIdEditRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof homeLayoutIndexRoute
   '/new': typeof NewIndexRoute
   '/roadmap': typeof RoadmapIndexRoute
-  '/$id/edit': typeof editProductRequestIdEditRoute
   '/$id': typeof productRequestLayoutIdRoute
+  '/$id/edit': typeof editProductRequestLayoutIdEditRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
+  '/(edit-product-request)': typeof editProductRequestRouteWithChildren
+  '/(edit-product-request)/_layout': typeof editProductRequestLayoutRouteWithChildren
   '/(home)': typeof homeRouteWithChildren
   '/(home)/_layout': typeof homeLayoutRouteWithChildren
   '/(product-request)': typeof productRequestRouteWithChildren
   '/(product-request)/_layout': typeof productRequestLayoutRouteWithChildren
   '/new/': typeof NewIndexRoute
   '/roadmap/': typeof RoadmapIndexRoute
-  '/(edit-product-request)/$id/edit': typeof editProductRequestIdEditRoute
   '/(product-request)/_layout/$id': typeof productRequestLayoutIdRoute
   '/(home)/_layout/': typeof homeLayoutIndexRoute
+  '/(edit-product-request)/_layout/$id/edit': typeof editProductRequestLayoutIdEditRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/new' | '/roadmap' | '/$id/edit' | '/$id'
+  fullPaths: '/' | '/new' | '/roadmap' | '/$id' | '/$id/edit'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/new' | '/roadmap' | '/$id/edit' | '/$id'
+  to: '/' | '/new' | '/roadmap' | '/$id' | '/$id/edit'
   id:
     | '__root__'
+    | '/(edit-product-request)'
+    | '/(edit-product-request)/_layout'
     | '/(home)'
     | '/(home)/_layout'
     | '/(product-request)'
     | '/(product-request)/_layout'
     | '/new/'
     | '/roadmap/'
-    | '/(edit-product-request)/$id/edit'
     | '/(product-request)/_layout/$id'
     | '/(home)/_layout/'
+    | '/(edit-product-request)/_layout/$id/edit'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
+  editProductRequestRoute: typeof editProductRequestRouteWithChildren
   homeRoute: typeof homeRouteWithChildren
   productRequestRoute: typeof productRequestRouteWithChildren
   NewIndexRoute: typeof NewIndexRoute
   RoadmapIndexRoute: typeof RoadmapIndexRoute
-  editProductRequestIdEditRoute: typeof editProductRequestIdEditRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  editProductRequestRoute: editProductRequestRouteWithChildren,
   homeRoute: homeRouteWithChildren,
   productRequestRoute: productRequestRouteWithChildren,
   NewIndexRoute: NewIndexRoute,
   RoadmapIndexRoute: RoadmapIndexRoute,
-  editProductRequestIdEditRoute: editProductRequestIdEditRoute,
 }
 
 export const routeTree = rootRoute
@@ -269,11 +325,24 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
+        "/(edit-product-request)",
         "/(home)",
         "/(product-request)",
         "/new/",
-        "/roadmap/",
-        "/(edit-product-request)/$id/edit"
+        "/roadmap/"
+      ]
+    },
+    "/(edit-product-request)": {
+      "filePath": "(edit-product-request)",
+      "children": [
+        "/(edit-product-request)/_layout"
+      ]
+    },
+    "/(edit-product-request)/_layout": {
+      "filePath": "(edit-product-request)/_layout.tsx",
+      "parent": "/(edit-product-request)",
+      "children": [
+        "/(edit-product-request)/_layout/$id/edit"
       ]
     },
     "/(home)": {
@@ -308,9 +377,6 @@ export const routeTree = rootRoute
     "/roadmap/": {
       "filePath": "roadmap/index.tsx"
     },
-    "/(edit-product-request)/$id/edit": {
-      "filePath": "(edit-product-request)/$id.edit.tsx"
-    },
     "/(product-request)/_layout/$id": {
       "filePath": "(product-request)/_layout.$id.tsx",
       "parent": "/(product-request)/_layout"
@@ -318,6 +384,10 @@ export const routeTree = rootRoute
     "/(home)/_layout/": {
       "filePath": "(home)/_layout.index.tsx",
       "parent": "/(home)/_layout"
+    },
+    "/(edit-product-request)/_layout/$id/edit": {
+      "filePath": "(edit-product-request)/_layout.$id.edit.tsx",
+      "parent": "/(edit-product-request)/_layout"
     }
   }
 }

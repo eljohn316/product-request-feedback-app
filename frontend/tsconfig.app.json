@@ -28,7 +28,8 @@
       "@/*": ["src/*"],
       "@routes/home/*": ["src/routes/(home)/*"],
       "@routes/product-request/*": ["src/routes/(product-request)/*"],
-      "@routes/new/*": ["src/routes/new/*"]
+      "@routes/new/*": ["src/routes/new/*"],
+      "@routes/edit-product-request/*": ["src/routes/(edit-product-request)/*"]
     }
   },
   "include": ["src"]

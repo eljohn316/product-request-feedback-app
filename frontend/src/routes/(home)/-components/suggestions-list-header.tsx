@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { Link, useNavigate, useSearch } from '@tanstack/react-router';
 import { searchParamsSchema } from '@routes/home/-lib/schema';
-import { SORT_OPTIONS } from '@routes/home/-lib/constants';
+import { SORT_OPTIONS } from '@/constants';
 
 import { ArrowDownIcon, SuggestionsIcon } from '@/components/icons';
 import { Button } from '@/components/ui/button';
@@ -24,7 +24,7 @@ const SORT_OPTIONS_LABEL = [
 
 export function SuggestionsListHeader() {
   const navigate = useNavigate();
-  const { sort, category } = useSearch({ from: '/(home)/_layout' });
+  const { sort, category } = useSearch({ from: '/(home)/_layout/' });
 
   function handleUpdateSortSearchParam(value: string) {
     navigate({ to: '/', search: { category, sort: value as SortValue } });

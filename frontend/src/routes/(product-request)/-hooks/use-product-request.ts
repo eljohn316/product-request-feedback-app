@@ -3,7 +3,7 @@ import { useParams } from '@tanstack/react-router';
 import {
   getProductRequest,
   getProductRequestComments
-} from '@routes/product-request/-lib/api';
+} from '@/api/product-request';
 
 export const productRequestQueryOptions = (productRequestId: string) =>
   queryOptions({

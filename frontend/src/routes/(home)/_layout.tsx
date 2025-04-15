@@ -6,7 +6,6 @@ import {
 import { useIsMobile } from '@/hooks/use-is-mobile';
 
 import { searchParamsSchema } from '@routes/home/-lib/schema';
-import { DEFAULT_SEARCH_PARAMS } from '@routes/home/-lib/constants';
 import { MobileHeader } from '@routes/home/-components/mobile-header';
 import { SuggestionsListHeader } from '@routes/home/-components/suggestions-list-header';
 import { Filters } from '@routes/home/-components/filters';
@@ -15,7 +14,14 @@ import { TitleCard } from '@routes/home/-components/title-card';
 
 export const Route = createFileRoute('/(home)/_layout')({
   validateSearch: searchParamsSchema,
-  search: { middlewares: [stripSearchParams(DEFAULT_SEARCH_PARAMS)] },
+  search: {
+    middlewares: [
+      stripSearchParams({
+        category: 'all',
+        sort: 'most-upvotes'
+      })
+    ]
+  },
   component: RouteComponent
 });
 

@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, useRouter } from '@tanstack/react-router';
 import { ProductRequestCardSkeleton } from '@/components/product-request-card-skeleton';
 import { ProductRequestItem } from '@routes/home/-components/product-request-item';
 import { ProductRequestEmpty } from '@routes/home/-components/product-request-empty';
@@ -17,12 +17,8 @@ export const Route = createFileRoute('/(home)/_layout/')({
     );
   },
   component: RouteComponent,
-  pendingComponent: PendingComponent
-  /**
-   * TODO:
-   * 1. Handle error and create component for error
-   * 2. Create a Link to return back to home for categories with empty results
-   */
+  pendingComponent: PendingComponent,
+  errorComponent: ErrorComponent
 });
 
 function RouteComponent() {
@@ -46,6 +42,21 @@ function PendingComponent() {
       <ProductRequestCardSkeleton />
       <ProductRequestCardSkeleton />
       <ProductRequestCardSkeleton />
+    </div>
+  );
+}
+
+function ErrorComponent() {
+  const router = useRouter();
+
+  return (
+    <div className="rounded-[0.625rem] bg-white px-6 py-10 text-center">
+      <h2 className="heading-2 text-east-bay">Something went wrong</h2>
+      <button
+        className="text-royal-blue mt-4 inline-flex cursor-pointer text-sm font-medium hover:underline"
+        onClick={() => router.invalidate()}>
+        Try again
+      </button>
     </div>
   );
 }

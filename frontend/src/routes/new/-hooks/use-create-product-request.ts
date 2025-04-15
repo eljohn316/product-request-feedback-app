@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
-import { createNewProductRequest } from '@routes/new/-lib/api';
+import { createNewProductRequest } from '@/api/product-request';
 
 export function useCreateProductRequest() {
   const queryClient = useQueryClient();
