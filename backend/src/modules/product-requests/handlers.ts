@@ -9,7 +9,8 @@ import {
   createNewProductRequest,
   getAllProductsRequests,
   getProductRequest,
-  updateProductRequest
+  updateProductRequest,
+  getProductRequestsAggregateCount
 } from '@/modules/product-requests/services';
 
 type ProductRequestSearchParams = {
@@ -71,4 +72,10 @@ export const updateProductRequestHandler = async (req: Request, res: Response) =
   });
 
   res.status(200).json({ productRequest });
+};
+
+export const getProductRequestsAggregateCountHandler = async (req: Request, res: Response) => {
+  const productRequests = await getProductRequestsAggregateCount();
+
+  res.status(200).json({ productRequests });
 };

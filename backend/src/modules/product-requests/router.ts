@@ -9,6 +9,7 @@ router.get(
   validations.getAllProductRequestsValidations,
   handlers.getAllProductRequestsHandler
 );
+router.get('/aggregate', handlers.getProductRequestsAggregateCountHandler);
 router.get(
   '/:productId',
   validations.getProductRequestValidations,
