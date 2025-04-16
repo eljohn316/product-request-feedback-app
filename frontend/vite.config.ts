@@ -18,7 +18,8 @@ export default defineConfig({
       '@routes/edit-product-request': path.resolve(
         __dirname,
         './src/routes/(edit-product-request)'
-      )
+      ),
+      '@routes/roadmap': path.resolve(__dirname, './src/routes/roadmap')
     }
   },
   plugins: [

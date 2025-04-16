@@ -11,7 +11,7 @@ function ReturnLinkBase({
   return (
     <a
       className={cn(
-        'text-waikawa-gray inline-flex cursor-pointer items-center gap-x-4 text-[0.8125rem] font-bold hover:underline',
+        'text-waikawa-gray inline-flex cursor-pointer items-center gap-x-4 text-[0.8125rem] font-bold hover:underline md:text-sm',
         className
       )}
       {...props}>

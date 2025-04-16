@@ -1,6 +1,6 @@
 import { UpvoteButton } from '@/components/upvote-button';
 import { CommentsIcon } from '@/components/icons';
-import { ProductRequest } from '@routes/home/-lib/types';
+import { ProductRequest } from '@/lib/types';
 
 interface ProductRequestItemProps {
   productRequest: ProductRequest;

@@ -29,7 +29,8 @@
       "@routes/home/*": ["src/routes/(home)/*"],
       "@routes/product-request/*": ["src/routes/(product-request)/*"],
       "@routes/new/*": ["src/routes/new/*"],
-      "@routes/edit-product-request/*": ["src/routes/(edit-product-request)/*"]
+      "@routes/edit-product-request/*": ["src/routes/(edit-product-request)/*"],
+      "@routes/roadmap/*": ["src/routes/roadmap/*"]
     }
   },
   "include": ["src"]
