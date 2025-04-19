@@ -117,7 +117,7 @@ export const updateProductRequest = async (
   return productRequest;
 };
 
-export const getProductRequestsAggregateCount = async () => {
+export const getProductRequestsRoadmap = async () => {
   const productRequests = await db.productRequest.findMany({
     where: {
       status: {
@@ -156,5 +156,25 @@ export const getProductRequestsAggregateCount = async () => {
       items: plannedProductRequests,
       count: plannedProductRequests.length
     }
+  };
+};
+
+export const getProductRequestsRoadmapStats = async () => {
+  const productRequests = await db.productRequest.findMany({
+    where: {
+      status: {
+        notIn: ['suggestion']
+      }
+    }
+  });
+
+  const plannedCount = productRequests.filter((p) => p.status === 'planned').length;
+  const inProgressCount = productRequests.filter((p) => p.status === 'in-progress').length;
+  const liveCount = productRequests.filter((p) => p.status === 'live').length;
+
+  return {
+    planned: plannedCount,
+    inProgress: inProgressCount,
+    live: liveCount
   };
 };

@@ -10,7 +10,8 @@ import {
   getAllProductsRequests,
   getProductRequest,
   updateProductRequest,
-  getProductRequestsAggregateCount
+  getProductRequestsRoadmap,
+  getProductRequestsRoadmapStats
 } from '@/modules/product-requests/services';
 
 type ProductRequestSearchParams = {
@@ -74,8 +75,16 @@ export const updateProductRequestHandler = async (req: Request, res: Response) =
   res.status(200).json({ productRequest });
 };
 
-export const getProductRequestsAggregateCountHandler = async (req: Request, res: Response) => {
-  const productRequests = await getProductRequestsAggregateCount();
+export const getProductRequestsRoadmapHandler = async (req: Request, res: Response) => {
+  const productRequests = await getProductRequestsRoadmap();
 
   res.status(200).json({ productRequests });
+};
+
+export const getProductRequestsRoadmapStatsHandler = async (req: Request, res: Response) => {
+  const productRequestStats = await getProductRequestsRoadmapStats();
+
+  res.status(200).json({
+    productRequests: productRequestStats
+  });
 };

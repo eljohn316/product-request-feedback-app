@@ -100,3 +100,35 @@ export const updateProductRequest = async (
 
   return response.data.productRequest;
 };
+
+type ProductRequestRoadmap = {
+  productRequests: {
+    inProgress: { count: number; items: ProductRequest[] };
+    live: { count: number; items: ProductRequest[] };
+    planned: { count: number; items: ProductRequest[] };
+  };
+};
+
+export const getProductsRequestRoadmap = async () => {
+  const response = await axios.get<ProductRequestRoadmap>(
+    '/product-requests/roadmap'
+  );
+
+  return response.data.productRequests;
+};
+
+type ProductRequestRoadmapStats = {
+  productRequests: {
+    planned: number;
+    inProgress: number;
+    live: number;
+  };
+};
+
+export const getProductsRequestRoadmapStats = async () => {
+  const response = await axios.get<ProductRequestRoadmapStats>(
+    '/product-requests/roadmap-stats'
+  );
+
+  return response.data.productRequests;
+};

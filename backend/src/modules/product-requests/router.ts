@@ -9,7 +9,8 @@ router.get(
   validations.getAllProductRequestsValidations,
   handlers.getAllProductRequestsHandler
 );
-router.get('/aggregate', handlers.getProductRequestsAggregateCountHandler);
+router.get('/roadmap', handlers.getProductRequestsRoadmapHandler);
+router.get('/roadmap-stats', handlers.getProductRequestsRoadmapStatsHandler);
 router.get(
   '/:productId',
   validations.getProductRequestValidations,

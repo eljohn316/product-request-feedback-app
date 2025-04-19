@@ -6,15 +6,19 @@ import {
   useProductRequests,
   productRequestsQueryOptions
 } from '@routes/home/-hooks/use-product-requests';
+import { productRequestsStatsQueryOptions } from '@routes/home/-hooks/use-product-requests-stats';
 
 export const Route = createFileRoute('/(home)/_layout/')({
   loaderDeps: ({ search: { sort, category } }) => ({ sort, category }),
   loader: ({ context, deps }) => {
     const { queryClient } = context;
     const { sort, category } = deps;
-    queryClient.ensureQueryData(
-      productRequestsQueryOptions({ sort, category })
-    );
+    Promise.all([
+      queryClient.ensureQueryData(
+        productRequestsQueryOptions({ sort, category })
+      ),
+      queryClient.ensureQueryData(productRequestsStatsQueryOptions)
+    ]);
   },
   component: RouteComponent,
   pendingComponent: PendingComponent,
