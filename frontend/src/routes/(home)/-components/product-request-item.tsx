@@ -1,6 +1,7 @@
 import { Link } from '@tanstack/react-router';
-import { type ProductRequest } from '@/lib/types';
 import { ProductRequestCard } from '@/components/product-request-card';
+import { type ProductRequest } from '@/lib/types';
+import { useUpvote } from '@routes/home/-hooks/use-upvote';
 
 interface ProductRequestItemProps {
   productRequest: ProductRequest;
@@ -9,10 +10,18 @@ interface ProductRequestItemProps {
 export function ProductRequestItem({
   productRequest
 }: ProductRequestItemProps) {
+  const upvote = useUpvote(productRequest.id);
+
   function handleUpvote(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
 
-    // console.log(handle upvote here)
+    upvote({
+      title: productRequest.title,
+      category: productRequest.category,
+      description: productRequest.description,
+      upvotes: productRequest.upvotes + 1,
+      status: productRequest.status
+    });
   }
 
   return (
