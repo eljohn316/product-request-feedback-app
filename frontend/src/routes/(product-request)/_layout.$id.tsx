@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import {
   createFileRoute,
   useRouter,
@@ -12,6 +13,8 @@ import {
   productRequestQueryOptions,
   productRequestCommentsQueryOptions
 } from '@routes/product-request/-hooks/use-product-request';
+import { useUpvote } from '@routes/product-request/-hooks/use-upvote';
+import { useComment } from '@routes/product-request/-hooks/use-comment';
 import { ProductRequestComments } from '@routes/product-request/-components/product-request-comments';
 import { ProductRequestCommentsSkeleton } from '@routes/product-request/-components/product-request-comments-skeleton';
 import { CommentForm } from '@routes/product-request/-components/comment-form';
@@ -32,10 +35,25 @@ export const Route = createFileRoute('/(product-request)/_layout/$id')({
 });
 
 function RouteComponent() {
+  const formRef = useRef<HTMLFormElement>(null);
   const { productRequest, comments } = useProductRequest();
+  const upvote = useUpvote();
+  const comment = useComment();
 
   function handleUpvote() {
-    console.log('Handle upvote here');
+    upvote({
+      title: productRequest.title,
+      category: productRequest.category,
+      description: productRequest.description,
+      status: productRequest.status,
+      upvotes: productRequest.upvotes + 1
+    });
+  }
+
+  function handleComment(formData: FormData) {
+    const content = formData.get('comment') as string;
+    comment({ content, productId: productRequest.id });
+    formRef.current?.reset();
   }
 
   return (
@@ -45,7 +63,7 @@ function RouteComponent() {
         onUpvote={handleUpvote}
       />
       <ProductRequestComments comments={comments} />
-      <CommentForm />
+      <CommentForm action={handleComment} ref={formRef} />
     </div>
   );
 }

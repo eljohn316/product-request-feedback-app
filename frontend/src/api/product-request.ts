@@ -44,14 +44,6 @@ export const getProductRequest = async (productId: string) => {
   }
 };
 
-export const getProductRequestComments = async (productId: string) => {
-  const response = await axios.get<{ comments: Comment[] }>(
-    `/comments/${productId}`
-  );
-
-  return response.data.comments;
-};
-
 type CreateNewProductRequestArgs = {
   title: string;
   category: Category;
@@ -131,4 +123,30 @@ export const getProductsRequestRoadmapStats = async () => {
   );
 
   return response.data.productRequests;
+};
+
+export const getProductRequestComments = async (productId: string) => {
+  const response = await axios.get<{ comments: Comment[] }>(
+    `/comments/${productId}`
+  );
+
+  return response.data.comments;
+};
+
+export const addProductRequestComment = async ({
+  content,
+  productId
+}: {
+  content: string;
+  productId: string;
+}) => {
+  const response = await axios.post<{ comment: Comment }>(
+    `/comments/${productId}`,
+    {
+      content,
+      productId
+    }
+  );
+
+  return response.data.comment;
 };

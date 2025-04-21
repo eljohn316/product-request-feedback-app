@@ -9,5 +9,10 @@ router.get(
   validations.getProductRequestCommentsValidations,
   handlers.getProductRequestCommentsHandler
 );
+router.post(
+  '/:productId',
+  validations.addProductRequestCommentsValidations,
+  handlers.addProductRequestCommentsHandler
+);
 
 export default router;
