@@ -22,6 +22,7 @@ export type Reply = {
   content: string;
   replyingTo: string;
   user: User;
+  commentId: string;
 };
 
 export type Comment = {

@@ -29,7 +29,8 @@ export const getProductRequestComments = async (productId: string) => {
               name: true,
               username: true
             }
-          }
+          },
+          commentId: true
         }
       }
     }

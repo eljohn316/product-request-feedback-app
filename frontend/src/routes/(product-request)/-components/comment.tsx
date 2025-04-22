@@ -1,10 +1,6 @@
-import { useState } from 'react';
+import { createContext, use, useState } from 'react';
 import { cn, getUserImageUrl } from '@/lib/utils';
-import {
-  type Reply,
-  type Comment,
-  User
-} from '@routes/product-request/-lib/types';
+import type { Reply, Comment, User } from '@/lib/types';
 import { TextareaInput } from '@/components/ui/textarea-input';
 import { Button } from '@/components/ui/button';
 
@@ -12,20 +8,42 @@ type CommentProps =
   | {
       as: 'comment';
       comment: Comment;
-      replies: (reply: Reply) => React.ReactNode;
+      onReply: (
+        formData: FormData,
+        setToggleReply: React.Dispatch<React.SetStateAction<boolean>>
+      ) => void | Promise<void>;
+      renderReplies: (reply: Reply) => React.ReactNode;
     }
   | {
       as: 'reply';
       comment: Reply;
-      replies?: never;
+      onReply: (
+        formData: FormData,
+        setToggleReply: React.Dispatch<React.SetStateAction<boolean>>
+      ) => void | Promise<void>;
+      renderReplies?: never;
     };
 
-interface CommentHeaderProps {
+type CommentContext = {
   user: User;
-  actions: React.ReactNode;
+  toggleReply: boolean;
+  setToggleReply: React.Dispatch<React.SetStateAction<boolean>>;
+} & ({ as: 'comment'; comment: Comment } | { as: 'reply'; comment: Reply });
+
+const CommentContext = createContext<CommentContext | undefined>(undefined);
+
+function useComment() {
+  const context = use(CommentContext);
+  if (!context)
+    throw new Error(
+      'useContext must be used within <CommentProvider /> component.'
+    );
+  return context;
 }
 
-function CommentHeader({ user, actions }: CommentHeaderProps) {
+function CommentHeader() {
+  const { user, toggleReply, setToggleReply } = useComment();
+
   return (
     <div className="flex items-center gap-x-4 md:gap-x-8">
       <img
@@ -41,12 +59,76 @@ function CommentHeader({ user, actions }: CommentHeaderProps) {
           @{user.username}
         </p>
       </div>
-      {actions}
+      {toggleReply ? (
+        <button
+          type="button"
+          className="text-royal-blue shrink-0 cursor-pointer text-[0.8125rem] font-semibold hover:underline"
+          onClick={() => setToggleReply(false)}>
+          Cancel
+        </button>
+      ) : (
+        <button
+          type="button"
+          className="text-royal-blue shrink-0 cursor-pointer text-[0.8125rem] font-semibold hover:underline"
+          onClick={() => setToggleReply(true)}>
+          Reply
+        </button>
+      )}
     </div>
   );
 }
 
-function CommentIndicator() {
+function CommentContent({
+  className,
+  content,
+  replyingTo,
+  ...props
+}: React.ComponentProps<'div'> & { replyingTo?: string; content: string }) {
+  return (
+    <div className={cn('mt-4 md:mt-[1.0625rem]', className)} {...props}>
+      <p className="text-waikawa-gray text-[0.8125rem] md:text-[0.9375rem]">
+        {replyingTo && (
+          <span className="text-electric-violet font-bold">{replyingTo} </span>
+        )}
+        {content}
+      </p>
+    </div>
+  );
+}
+
+function CommentForm(props: React.ComponentProps<'form'>) {
+  const { as, comment, toggleReply } = useComment();
+
+  if (!toggleReply) return null;
+
+  return (
+    <form
+      className="mt-4 flex flex-col gap-y-4 md:mt-[1.0625rem] md:flex-row md:items-start md:gap-x-4 md:gap-y-0 md:pl-[4.5rem]"
+      {...props}>
+      <input
+        type="hidden"
+        name="comment"
+        value={as === 'comment' ? comment.id : comment.commentId}
+      />
+      <input type="hidden" name="user" value={comment.user.username} />
+      <TextareaInput
+        name="content"
+        id="content"
+        className="flex-1"
+        placeholder="Type your reply here"
+        autoFocus
+        required
+      />
+      <div className="flex justify-end md:flex-none">
+        <Button type="submit" fill="violet" className="">
+          Post Reply
+        </Button>
+      </div>
+    </form>
+  );
+}
+
+function CommentReplyThreadIndicator() {
   return (
     <div
       className={cn(
@@ -59,114 +141,65 @@ function CommentIndicator() {
   );
 }
 
-export function Comment({ as, comment, replies }: CommentProps) {
+export function Comment({ as, comment, onReply, renderReplies }: CommentProps) {
   const [toggleReply, setToggleReply] = useState(false);
 
-  if (as === 'comment')
+  if (as === 'comment') {
+    const { replies } = comment;
+
     return (
-      <div className="py-6 first:pt-0 last:pb-0 md:py-8">
-        <CommentHeader
-          user={comment.user}
-          actions={
-            toggleReply ? (
-              <button
-                type="button"
-                className="text-royal-blue shrink-0 cursor-pointer text-[0.8125rem] font-semibold hover:underline"
-                onClick={() => setToggleReply(false)}>
-                Cancel
-              </button>
-            ) : (
-              <button
-                type="button"
-                className="text-royal-blue shrink-0 cursor-pointer text-[0.8125rem] font-semibold hover:underline"
-                onClick={() => setToggleReply(true)}>
-                Reply
-              </button>
-            )
-          }
-        />
-        <div
-          className={cn(
-            comment.replies.length >= 1
-              ? 'md:ml-5 md:border-l md:border-[#647196]/10 md:pl-[3.25rem]'
-              : 'md:pl-[4.5rem]',
-            'mt-4 md:mt-[1.0625rem]'
-          )}>
-          <p className="text-waikawa-gray text-[0.8125rem] md:text-[0.9375rem]">
-            {comment.content}
-          </p>
-        </div>
-        {toggleReply && (
-          <form className="mt-4 flex flex-col gap-y-4 md:mt-[1.0625rem] md:flex-row md:items-start md:gap-x-4 md:gap-y-0 md:pl-[4.5rem]">
-            <TextareaInput
-              name="reply"
-              id="reply"
-              className="flex-1"
-              placeholder="Type your reply here"
-              autoFocus
-            />
-            <div className="flex justify-end md:flex-none">
-              <Button type="submit" fill="violet" className="">
-                Post Reply
-              </Button>
+      <CommentContext.Provider
+        value={{
+          as: 'comment',
+          comment,
+          user: comment.user,
+          toggleReply,
+          setToggleReply
+        }}>
+        <div className="py-6 first:pt-0 last:pb-0 md:py-8">
+          <CommentHeader />
+          <CommentContent
+            className={cn(
+              replies.length >= 1
+                ? 'md:ml-5 md:border-l md:border-[#647196]/10 md:pl-[3.25rem]'
+                : 'md:pl-[4.5rem]'
+            )}
+            content={comment.content}
+          />
+          <CommentForm
+            action={(formData: FormData) => onReply(formData, setToggleReply)}
+          />
+          {comment.replies.length >= 1 && (
+            <div className="mt-6 space-y-6 md:mt-8 md:ml-5 md:space-y-8">
+              {comment.replies.map(renderReplies)}
             </div>
-          </form>
-        )}
-        {comment.replies.length >= 1 && (
-          <div className="mt-6 space-y-6 md:mt-8 md:ml-5 md:space-y-8">
-            {comment.replies.map(replies)}
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      </CommentContext.Provider>
     );
+  }
 
   return (
-    <div className="group relative pl-6">
-      <CommentHeader
-        user={comment.user}
-        actions={
-          toggleReply ? (
-            <button
-              type="button"
-              className="text-royal-blue shrink-0 cursor-pointer text-[0.8125rem] font-semibold hover:underline"
-              onClick={() => setToggleReply(false)}>
-              Cancel
-            </button>
-          ) : (
-            <button
-              type="button"
-              className="text-royal-blue shrink-0 cursor-pointer text-[0.8125rem] font-semibold hover:underline"
-              onClick={() => setToggleReply(true)}>
-              Reply
-            </button>
-          )
-        }
-      />
-      <div className="mt-4 md:mt-[1.0625rem] md:pl-[4.5rem]">
-        <p className="text-waikawa-gray text-[0.8125rem] md:text-[0.9375rem]">
-          <span className="text-electric-violet font-bold">
-            @{comment.replyingTo}
-          </span>{' '}
-          {comment.content}
-        </p>
+    <CommentContext.Provider
+      value={{
+        as: 'reply',
+        comment: comment,
+        user: comment.user,
+        toggleReply,
+        setToggleReply
+      }}>
+      <div className="group relative pl-6">
+        <CommentHeader />
+        <CommentContent
+          className="md:pl-[4.5rem]"
+          replyingTo={comment.replyingTo}
+          content={comment.content}
+        />
+        <CommentForm
+          action={(formData: FormData) => onReply(formData, setToggleReply)}
+        />
+        <CommentReplyThreadIndicator />
       </div>
-      {toggleReply && (
-        <form className="mt-4 flex flex-col gap-y-4 md:mt-[1.0625rem] md:flex-row md:items-start md:gap-x-4 md:gap-y-0 md:pl-[4.5rem]">
-          <TextareaInput
-            name="reply"
-            id="reply"
-            className="flex-1"
-            placeholder="Type your reply here"
-            autoFocus
-          />
-          <div className="flex justify-end md:flex-none">
-            <Button type="submit" fill="violet" className="">
-              Post Reply
-            </Button>
-          </div>
-        </form>
-      )}
-      <CommentIndicator />
-    </div>
+    </CommentContext.Provider>
   );
 }

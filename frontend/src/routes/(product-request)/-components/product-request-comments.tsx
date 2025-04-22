@@ -1,8 +1,21 @@
-import { Comment as BaseComment } from '@routes/product-request/-components/comment';
+import { Comment as ProductRequestComment } from '@routes/product-request/-components/comment';
 import { type Comment } from '@/lib/types';
+import React, { SetStateAction } from 'react';
 
 export function ProductRequestComments({ comments }: { comments: Comment[] }) {
   const totalComments = comments.length;
+
+  function handleReply(
+    formData: FormData,
+    toggleReplyForm: React.Dispatch<SetStateAction<boolean>>
+  ) {
+    const username = formData.get('user') as string;
+    const commentId = formData.get('comment') as string;
+    const content = formData.get('content') as string;
+
+    console.log({ username, commentId, content });
+    toggleReplyForm(false);
+  }
 
   if (totalComments === 0)
     return (
@@ -18,12 +31,18 @@ export function ProductRequestComments({ comments }: { comments: Comment[] }) {
       </h3>
       <div className="divide-y divide-[#8C92B3]/25">
         {comments.map((comment) => (
-          <BaseComment
+          <ProductRequestComment
             key={comment.id}
             as="comment"
             comment={comment}
-            replies={(reply) => (
-              <BaseComment key={reply.id} as="reply" comment={reply} />
+            onReply={handleReply}
+            renderReplies={(reply) => (
+              <ProductRequestComment
+                key={reply.id}
+                as="reply"
+                comment={reply}
+                onReply={handleReply}
+              />
             )}
           />
         ))}
