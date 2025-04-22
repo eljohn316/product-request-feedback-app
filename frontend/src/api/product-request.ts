@@ -1,7 +1,7 @@
 import { isAxiosError } from 'axios';
 import { axios } from '@/lib/axios';
 import { NotFoundError } from '@/lib/errors';
-import type { ProductRequest, Comment, Category } from '@/lib/types';
+import type { ProductRequest, Comment, Category, Reply } from '@/lib/types';
 import type { SortOptionValue, CategoryValue } from '@/constants';
 
 type GetAllProductRequestsOptions = {
@@ -149,4 +149,22 @@ export const addProductRequestComment = async ({
   );
 
   return response.data.comment;
+};
+
+export const addProductRequestCommentReply = async ({
+  content,
+  replyingTo,
+  commentId
+}: {
+  content: string;
+  replyingTo: string;
+  commentId: string;
+}) => {
+  const response = await axios.post<{ reply: Reply }>(`/reply`, {
+    content,
+    replyingTo,
+    commentId
+  });
+
+  return response.data.reply;
 };

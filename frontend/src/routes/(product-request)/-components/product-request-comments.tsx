@@ -1,8 +1,10 @@
 import { Comment as ProductRequestComment } from '@routes/product-request/-components/comment';
 import { type Comment } from '@/lib/types';
 import React, { SetStateAction } from 'react';
+import { useCommentReply } from '../-hooks/use-comment-reply';
 
 export function ProductRequestComments({ comments }: { comments: Comment[] }) {
+  const reply = useCommentReply();
   const totalComments = comments.length;
 
   function handleReply(
@@ -13,7 +15,7 @@ export function ProductRequestComments({ comments }: { comments: Comment[] }) {
     const commentId = formData.get('comment') as string;
     const content = formData.get('content') as string;
 
-    console.log({ username, commentId, content });
+    reply({ content, commentId, replyingTo: username });
     toggleReplyForm(false);
   }
 

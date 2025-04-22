@@ -88,7 +88,7 @@ function CommentContent({
     <div className={cn('mt-4 md:mt-[1.0625rem]', className)} {...props}>
       <p className="text-waikawa-gray text-[0.8125rem] md:text-[0.9375rem]">
         {replyingTo && (
-          <span className="text-electric-violet font-bold">{replyingTo} </span>
+          <span className="text-electric-violet font-bold">@{replyingTo} </span>
         )}
         {content}
       </p>
