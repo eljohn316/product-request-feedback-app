@@ -26,5 +26,10 @@ router.patch(
   validations.updateProductRequestValidations,
   handlers.updateProductRequestHandler
 );
+router.delete(
+  '/:productId',
+  validations.deleteProductRequestValidations,
+  handlers.deleteProductRequestHandler
+);
 
 export default router;

@@ -73,3 +73,7 @@ export const updateProductRequestValidations = [
   body('description').optional({ values: 'falsy' }),
   validationResultHandler
 ];
+
+export const deleteProductRequestValidations = [
+  param('productId').exists().withMessage("Missing required parameter: 'productId'")
+];

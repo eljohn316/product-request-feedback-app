@@ -11,7 +11,8 @@ import {
   getProductRequest,
   updateProductRequest,
   getProductRequestsRoadmap,
-  getProductRequestsRoadmapStats
+  getProductRequestsRoadmapStats,
+  deleteProductRequest
 } from '@/modules/product-requests/services';
 
 type ProductRequestSearchParams = {
@@ -87,4 +88,12 @@ export const getProductRequestsRoadmapStatsHandler = async (req: Request, res: R
   res.status(200).json({
     productRequests: productRequestStats
   });
+};
+
+export const deleteProductRequestHandler = async (req: Request, res: Response) => {
+  const { productId } = matchedData<{ productId: string }>(req);
+
+  const productRequest = await deleteProductRequest(productId);
+
+  res.status(200).json({ productRequest });
 };

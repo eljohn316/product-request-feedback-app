@@ -178,3 +178,11 @@ export const getProductRequestsRoadmapStats = async () => {
     live: liveCount
   };
 };
+
+export const deleteProductRequest = async (productId: string) => {
+  const productRequest = await db.productRequest.delete({
+    where: { id: productId }
+  });
+
+  return productRequest;
+};
