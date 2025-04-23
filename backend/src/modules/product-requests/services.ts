@@ -118,12 +118,8 @@ export const updateProductRequest = async (
 };
 
 export const getProductRequestsRoadmap = async () => {
-  const productRequests = await db.productRequest.findMany({
-    where: {
-      status: {
-        notIn: ['suggestion']
-      }
-    },
+  const plannedProductsPromise = db.productRequest.findMany({
+    where: { status: { equals: 'planned' } },
     select: {
       id: true,
       title: true,
@@ -136,25 +132,68 @@ export const getProductRequestsRoadmap = async () => {
           comments: true
         }
       }
+    },
+    orderBy: {
+      upvotes: 'desc'
+    }
+  });
+  const inProgressProductsPromise = db.productRequest.findMany({
+    where: { status: { equals: 'in-progress' } },
+    select: {
+      id: true,
+      title: true,
+      category: true,
+      description: true,
+      upvotes: true,
+      status: true,
+      _count: {
+        select: {
+          comments: true
+        }
+      }
+    },
+    orderBy: {
+      upvotes: 'desc'
+    }
+  });
+  const liveProductsPromise = db.productRequest.findMany({
+    where: { status: { equals: 'live' } },
+    select: {
+      id: true,
+      title: true,
+      category: true,
+      description: true,
+      upvotes: true,
+      status: true,
+      _count: {
+        select: {
+          comments: true
+        }
+      }
+    },
+    orderBy: {
+      upvotes: 'desc'
     }
   });
 
-  const inProgressProductRequests = productRequests.filter((item) => item.status === 'in-progress');
-  const liveProductRequests = productRequests.filter((item) => item.status === 'live');
-  const plannedProductRequests = productRequests.filter((item) => item.status === 'planned');
+  const [plannedProducts, inProgressProducts, liveProducts] = await Promise.all([
+    plannedProductsPromise,
+    inProgressProductsPromise,
+    liveProductsPromise
+  ]);
 
   return {
+    planned: {
+      items: plannedProducts,
+      count: plannedProducts.length
+    },
     inProgress: {
-      items: inProgressProductRequests,
-      count: inProgressProductRequests.length
+      items: inProgressProducts,
+      count: inProgressProducts.length
     },
     live: {
-      items: liveProductRequests,
-      count: liveProductRequests.length
-    },
-    planned: {
-      items: plannedProductRequests,
-      count: plannedProductRequests.length
+      items: liveProducts,
+      count: liveProducts.length
     }
   };
 };
