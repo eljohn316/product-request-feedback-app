@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from '@tanstack/react-router';
@@ -20,8 +21,16 @@ import {
   SelectValue
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogTitle
+} from '@/components/ui/dialog';
 import type { ProductRequest, Category, Status } from '@/lib/types';
 import { useUpdateProductRequest } from '@routes/edit-product-request/-hooks/use-update-product-request';
+import { useDeleteProductRequest } from '../-hooks/use-delete-product-request';
 
 const editProductRequestSchema = z.object({
   title: z.string().min(1, { message: "Can't be empty" }),
@@ -37,6 +46,7 @@ export function EditProductRequestForm({
 }: {
   productRequest: ProductRequest;
 }) {
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const form = useForm<EditProductRequest>({
     resolver: zodResolver(editProductRequestSchema),
@@ -48,7 +58,13 @@ export function EditProductRequestForm({
     }
   });
 
-  const { mutate: update, isPending, error } = useUpdateProductRequest();
+  const {
+    mutate: update,
+    isPending: isUpdating,
+    error
+  } = useUpdateProductRequest();
+  const { mutate: deleteProduct, isPending: isDeleting } =
+    useDeleteProductRequest();
 
   function handleEditProductRequest(values: EditProductRequest) {
     update({
@@ -59,6 +75,14 @@ export function EditProductRequestForm({
     });
   }
 
+  function handleDelete() {
+    deleteProduct();
+  }
+
+  function handleClose() {
+    setOpen(false);
+  }
+
   return (
     <>
       {error && (
@@ -66,6 +90,23 @@ export function EditProductRequestForm({
           Internal server error. Please try again later
         </div>
       )}
+
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent>
+          <DialogTitle>Confirm delete</DialogTitle>
+          <DialogDescription className="mt-2">
+            Are you sure you want to delete this request?
+          </DialogDescription>
+          <DialogFooter className="mt-6">
+            <Button fill="crimson" onClick={handleDelete} disabled={isDeleting}>
+              {isDeleting ? 'Deleting' : 'Delete'}
+            </Button>
+            <Button fill="eastbay" onClick={handleClose} disabled={isDeleting}>
+              Cancel
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleEditProductRequest)}>
@@ -84,7 +125,7 @@ export function EditProductRequestForm({
                   <FormControl>
                     <TextareaInput
                       className="mt-4"
-                      disabled={isPending}
+                      disabled={isUpdating}
                       {...field}
                     />
                   </FormControl>
@@ -108,7 +149,7 @@ export function EditProductRequestForm({
                     onValueChange={field.onChange}
                     defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger className="mt-4" disabled={isPending}>
+                      <SelectTrigger className="mt-4" disabled={isUpdating}>
                         <SelectValue />
                       </SelectTrigger>
                     </FormControl>
@@ -138,7 +179,7 @@ export function EditProductRequestForm({
                     onValueChange={field.onChange}
                     defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger className="mt-4" disabled={isPending}>
+                      <SelectTrigger className="mt-4" disabled={isUpdating}>
                         <SelectValue />
                       </SelectTrigger>
                     </FormControl>
@@ -169,7 +210,7 @@ export function EditProductRequestForm({
                   <FormControl>
                     <TextareaInput
                       className="mt-4"
-                      disabled={isPending}
+                      disabled={isUpdating}
                       {...field}
                     />
                   </FormControl>
@@ -179,13 +220,13 @@ export function EditProductRequestForm({
             />
           </div>
           <div className="mt-10 flex flex-col gap-y-4 sm:mt-8 sm:flex-row-reverse sm:gap-x-4 sm:gap-y-0">
-            <Button type="submit" fill="violet" disabled={isPending}>
-              {isPending ? 'Saving changes' : 'Save changes'}
+            <Button type="submit" fill="violet" disabled={isUpdating}>
+              {isUpdating ? 'Saving changes' : 'Save changes'}
             </Button>
             <Button
               type="button"
               fill="eastbay"
-              disabled={isPending}
+              disabled={isUpdating}
               onClick={() => navigate({ to: '..' })}>
               Cancel
             </Button>
@@ -193,7 +234,8 @@ export function EditProductRequestForm({
               type="button"
               fill="crimson"
               className="sm:mr-auto"
-              disabled={isPending}>
+              disabled={isUpdating}
+              onClick={() => setOpen(true)}>
               Delete
             </Button>
           </div>

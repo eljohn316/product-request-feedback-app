@@ -181,7 +181,19 @@ export const getProductRequestsRoadmapStats = async () => {
 
 export const deleteProductRequest = async (productId: string) => {
   const productRequest = await db.productRequest.delete({
-    where: { id: productId }
+    where: { id: productId },
+    select: {
+      id: true,
+      title: true,
+      category: true,
+      description: true,
+      upvotes: true,
+      _count: {
+        select: {
+          comments: true
+        }
+      }
+    }
   });
 
   return productRequest;

@@ -93,6 +93,14 @@ export const updateProductRequest = async (
   return response.data.productRequest;
 };
 
+export const deleteProductRequest = async (productId: string) => {
+  const response = await axios.delete<{ productRequest: ProductRequest }>(
+    `/product-requests/${productId}`
+  );
+
+  return response.data.productRequest;
+};
+
 type ProductRequestRoadmap = {
   productRequests: {
     inProgress: { count: number; items: ProductRequest[] };
