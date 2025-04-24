@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=production node dist/index.js",
+    "start": "NODE_ENV=production node dist/src/index.js",
     "build:code": "tsc && tsc-alias",
     "build:kill-dist": "rimraf dist",
     "build:prisma": "pnpx prisma generate",
