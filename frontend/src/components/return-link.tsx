@@ -1,28 +1,19 @@
-import * as React from 'react';
-import { createLink, LinkComponent } from '@tanstack/react-router';
+import { useRouter } from '@tanstack/react-router';
 import { cn } from '@/lib/utils';
 import { ArrowLeftIcon } from '@/components/icons';
 
-function ReturnLinkBase({
-  className,
-  children,
-  ...props
-}: React.ComponentProps<'a'>) {
+export function ReturnLink({ className }: { className?: string }) {
+  const router = useRouter();
+
   return (
-    <a
+    <button
       className={cn(
         'text-waikawa-gray inline-flex cursor-pointer items-center gap-x-4 text-[0.8125rem] font-bold hover:underline md:text-sm',
         className
       )}
-      {...props}>
+      onClick={() => router.history.back()}>
       <ArrowLeftIcon className="text-royal-blue" />
-      {children}
-    </a>
+      Go Back
+    </button>
   );
 }
-
-const CreatedReturnLinkBase = createLink(ReturnLinkBase);
-
-export const ReturnLink: LinkComponent<typeof ReturnLinkBase> = (props) => {
-  return <CreatedReturnLinkBase preload="intent" {...props} />;
-};

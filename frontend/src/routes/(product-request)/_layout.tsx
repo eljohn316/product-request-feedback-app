@@ -20,7 +20,7 @@ function RouteComponent() {
   return (
     <div className="mx-auto max-w-2xl p-6 md:pt-14 lg:max-w-3xl lg:pt-20">
       <div className="flex items-center justify-between">
-        <ReturnLink to="..">Go Back</ReturnLink>
+        <ReturnLink />
         <Button fill="blue" asChild>
           <Link to="/$id/edit" params={{ id: productRequestId }}>
             Edit Feedback

@@ -10,7 +10,7 @@ export const Route = createFileRoute('/new/')({
 function RouteComponent() {
   return (
     <div className="px-6 py-[2.125rem] md:mx-auto md:max-w-[33.75rem] md:px-0 md:py-14">
-      <ReturnLink to="..">Go Back</ReturnLink>
+      <ReturnLink />
       <div className="relative mt-[3.4375rem] rounded-[0.625rem] bg-white px-6 pt-11 pb-6 md:mt-[4.25rem] md:px-[2.625rem] md:pt-[3.25rem] md:pb-10">
         <img
           src={newFeedbackIcon}

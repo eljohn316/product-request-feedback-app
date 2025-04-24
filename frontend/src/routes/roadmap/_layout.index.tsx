@@ -19,6 +19,7 @@ import {
 } from '@routes/roadmap/-hooks/use-product-requests';
 import { useUpvote } from '@routes/roadmap/-hooks/use-upvote';
 import { type ProductRequest } from '@/lib/types';
+import React from 'react';
 
 export const Route = createFileRoute('/roadmap/_layout/')({
   loader: ({ context }) => {
@@ -39,7 +40,11 @@ function RouteComponent() {
   const { planned, inProgress, live } = useProductRequests();
   const upvote = useUpvote();
 
-  function handleUpvote(productRequest: ProductRequest) {
+  function handleUpvote(
+    e: React.MouseEvent<Element, MouseEvent>,
+    productRequest: ProductRequest
+  ) {
+    e.preventDefault();
     upvote({ ...productRequest, upvotes: productRequest.upvotes + 1 });
   }
 
@@ -59,7 +64,7 @@ function RouteComponent() {
             <ProductRequestCard
               key={item.id}
               productRequest={item}
-              onUpvote={() => handleUpvote(item)}
+              onUpvote={(e) => handleUpvote(e, item)}
             />
           )}
         />
@@ -71,7 +76,7 @@ function RouteComponent() {
             <ProductRequestCard
               key={item.id}
               productRequest={item}
-              onUpvote={() => handleUpvote(item)}
+              onUpvote={(e) => handleUpvote(e, item)}
             />
           )}
         />
@@ -83,7 +88,7 @@ function RouteComponent() {
             <ProductRequestCard
               key={item.id}
               productRequest={item}
-              onUpvote={() => handleUpvote(item)}
+              onUpvote={(e) => handleUpvote(e, item)}
             />
           )}
         />
@@ -98,7 +103,7 @@ function RouteComponent() {
             <ProductRequestCard
               key={item.id}
               productRequest={item}
-              onUpvote={() => handleUpvote(item)}
+              onUpvote={(e) => handleUpvote(e, item)}
             />
           )}
         />
@@ -110,7 +115,7 @@ function RouteComponent() {
             <ProductRequestCard
               key={item.id}
               productRequest={item}
-              onUpvote={() => handleUpvote(item)}
+              onUpvote={(e) => handleUpvote(e, item)}
             />
           )}
         />
@@ -122,7 +127,7 @@ function RouteComponent() {
             <ProductRequestCard
               key={item.id}
               productRequest={item}
-              onUpvote={() => handleUpvote(item)}
+              onUpvote={(e) => handleUpvote(e, item)}
             />
           )}
         />

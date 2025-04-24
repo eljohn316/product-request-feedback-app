@@ -16,11 +16,11 @@ export function useUpdateProductRequest() {
   return useMutation({
     mutationFn: (data: UpdateProductRequestArgs) =>
       updateProductRequest(productRequestId, data),
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [productRequestId, 'product-request', 'comments']
       });
-      navigate({ to: '/$id', params: { id: data.id } });
+      navigate({ to: '/roadmap' });
     }
   });
 }

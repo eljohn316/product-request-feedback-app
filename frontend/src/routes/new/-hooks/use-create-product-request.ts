@@ -8,11 +8,11 @@ export function useCreateProductRequest() {
 
   return useMutation({
     mutationFn: createNewProductRequest,
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['product-request', 'comments']
       });
-      navigate({ to: '/$id', params: { id: data.id } });
+      navigate({ to: '/' });
     }
   });
 }
