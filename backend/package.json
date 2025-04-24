@@ -7,7 +7,8 @@
     "start": "NODE_ENV=production node dist/index.js",
     "build:code": "tsc && tsc-alias",
     "build:kill-dist": "rimraf dist",
-    "build": "pnpm build:kill-dist && pnpm build:code",
+    "build:prisma": "pnpx prisma generate",
+    "build": "pnpm build:kill-dist && pnpm build:prisma && pnpm build:code",
     "lint": "tsc --noEmit",
     "dev": "NODE_ENV=development tsx watch --clear-screen=false --env-file=.env src/index.ts"
   },
