@@ -1,22 +1,30 @@
 import { isAxiosError } from 'axios';
 import { axios } from '@/lib/axios';
 import { NotFoundError } from '@/lib/errors';
-import type { ProductRequest, Comment, Category, Reply } from '@/lib/types';
+import type {
+  ProductRequest,
+  Comment,
+  Category,
+  Reply,
+  Status
+} from '@/lib/types';
 import type { SortOptionValue, CategoryValue } from '@/constants';
 
-type GetAllProductRequestsOptions = {
+type GetAllProductRequestsOptions = Partial<{
   sort: SortOptionValue;
   category: CategoryValue;
-};
+  status: Status;
+}>;
 
 export const getAllProductRequests = async ({
   sort = 'most-upvotes',
-  category = 'all'
+  category = 'all',
+  status = 'suggestion'
 }: GetAllProductRequestsOptions) => {
   const params =
     category === 'all'
-      ? { status: 'suggestion', sort }
-      : { status: 'suggestion', sort, category };
+      ? { status: status, sort }
+      : { status: status, sort, category };
 
   const response = await axios.get<{ productRequests: ProductRequest[] }>(
     '/product-requests',
@@ -99,22 +107,6 @@ export const deleteProductRequest = async (productId: string) => {
   );
 
   return response.data.productRequest;
-};
-
-type ProductRequestRoadmap = {
-  productRequests: {
-    inProgress: { count: number; items: ProductRequest[] };
-    live: { count: number; items: ProductRequest[] };
-    planned: { count: number; items: ProductRequest[] };
-  };
-};
-
-export const getProductsRequestRoadmap = async () => {
-  const response = await axios.get<ProductRequestRoadmap>(
-    '/product-requests/roadmap'
-  );
-
-  return response.data.productRequests;
 };
 
 type ProductRequestRoadmapStats = {

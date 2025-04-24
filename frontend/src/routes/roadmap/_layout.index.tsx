@@ -12,14 +12,23 @@ import {
 } from '@routes/roadmap/-components/product-request-columns';
 import { ProductRequestCardSkeleton } from '@routes/roadmap/-components/product-request-card-skeleton';
 import {
-  productRequestRoadmapQueryOptions,
-  useProductRequestRoadmap
-} from '@routes/roadmap/-hooks/use-product-requests-roadmap';
+  getPlannedProductsRequestQueryOptions,
+  getLiveProductsRequestQueryOptions,
+  getInProgressProductsRequestQueryOptions,
+  useProductRequests
+} from '@routes/roadmap/-hooks/use-product-requests';
+import { useUpvote } from '@routes/roadmap/-hooks/use-upvote';
+import { type ProductRequest } from '@/lib/types';
 
 export const Route = createFileRoute('/roadmap/_layout/')({
   loader: ({ context }) => {
     const { queryClient } = context;
-    queryClient.ensureQueryData(productRequestRoadmapQueryOptions);
+
+    Promise.all([
+      queryClient.ensureQueryData(getPlannedProductsRequestQueryOptions),
+      queryClient.ensureQueryData(getLiveProductsRequestQueryOptions),
+      queryClient.ensureQueryData(getInProgressProductsRequestQueryOptions)
+    ]);
   },
   component: RouteComponent,
   pendingComponent: PendingComponent,
@@ -27,59 +36,54 @@ export const Route = createFileRoute('/roadmap/_layout/')({
 });
 
 function RouteComponent() {
-  const productRequests = useProductRequestRoadmap();
+  const { planned, inProgress, live } = useProductRequests();
+  const upvote = useUpvote();
 
-  function handleUpvote(productRequestId: string) {
-    console.log('Product request id: ', productRequestId);
+  function handleUpvote(productRequest: ProductRequest) {
+    upvote({ ...productRequest, upvotes: productRequest.upvotes + 1 });
   }
 
   return (
     <>
       <ProductRequestTabs defaultValue="planned">
         <ProductRequestTabList>
-          <ProductRequestTab
-            value="planned"
-            count={productRequests.planned.count}
-          />
-          <ProductRequestTab
-            value="in-progress"
-            count={productRequests.inProgress.count}
-          />
-          <ProductRequestTab value="live" count={productRequests.live.count} />
+          <ProductRequestTab value="planned" count={planned.length} />
+          <ProductRequestTab value="in-progress" count={inProgress.length} />
+          <ProductRequestTab value="live" count={live.length} />
         </ProductRequestTabList>
         <ProductRequestTabContent
           value="planned"
-          count={productRequests.planned.count}
-          items={productRequests.planned.items}
+          count={planned.length}
+          items={planned}
           renderItems={(item) => (
             <ProductRequestCard
               key={item.id}
               productRequest={item}
-              onUpvote={() => handleUpvote(item.id)}
+              onUpvote={() => handleUpvote(item)}
             />
           )}
         />
         <ProductRequestTabContent
           value="in-progress"
-          count={productRequests.inProgress.count}
-          items={productRequests.inProgress.items}
+          count={inProgress.length}
+          items={inProgress}
           renderItems={(item) => (
             <ProductRequestCard
               key={item.id}
               productRequest={item}
-              onUpvote={() => handleUpvote(item.id)}
+              onUpvote={() => handleUpvote(item)}
             />
           )}
         />
         <ProductRequestTabContent
           value="live"
-          count={productRequests.live.count}
-          items={productRequests.live.items}
+          count={live.length}
+          items={live}
           renderItems={(item) => (
             <ProductRequestCard
               key={item.id}
               productRequest={item}
-              onUpvote={() => handleUpvote(item.id)}
+              onUpvote={() => handleUpvote(item)}
             />
           )}
         />
@@ -88,37 +92,37 @@ function RouteComponent() {
       <ProductRequestColumns>
         <ProductRequestColumn
           value="planned"
-          count={productRequests.planned.count}
-          items={productRequests.planned.items}
+          count={planned.length}
+          items={planned}
           renderItems={(item) => (
             <ProductRequestCard
               key={item.id}
               productRequest={item}
-              onUpvote={() => handleUpvote(item.id)}
+              onUpvote={() => handleUpvote(item)}
             />
           )}
         />
         <ProductRequestColumn
           value="in-progress"
-          count={productRequests.inProgress.count}
-          items={productRequests.inProgress.items}
+          count={inProgress.length}
+          items={inProgress}
           renderItems={(item) => (
             <ProductRequestCard
               key={item.id}
               productRequest={item}
-              onUpvote={() => handleUpvote(item.id)}
+              onUpvote={() => handleUpvote(item)}
             />
           )}
         />
         <ProductRequestColumn
           value="live"
-          count={productRequests.live.count}
-          items={productRequests.live.items}
+          count={live.length}
+          items={live}
           renderItems={(item) => (
             <ProductRequestCard
               key={item.id}
               productRequest={item}
-              onUpvote={() => handleUpvote(item.id)}
+              onUpvote={() => handleUpvote(item)}
             />
           )}
         />

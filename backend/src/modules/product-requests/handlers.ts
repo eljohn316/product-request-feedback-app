@@ -10,7 +10,6 @@ import {
   getAllProductsRequests,
   getProductRequest,
   updateProductRequest,
-  getProductRequestsRoadmap,
   getProductRequestsRoadmapStats,
   deleteProductRequest
 } from '@/modules/product-requests/services';
@@ -74,12 +73,6 @@ export const updateProductRequestHandler = async (req: Request, res: Response) =
   });
 
   res.status(200).json({ productRequest });
-};
-
-export const getProductRequestsRoadmapHandler = async (req: Request, res: Response) => {
-  const productRequests = await getProductRequestsRoadmap();
-
-  res.status(200).json({ productRequests });
 };
 
 export const getProductRequestsRoadmapStatsHandler = async (req: Request, res: Response) => {
