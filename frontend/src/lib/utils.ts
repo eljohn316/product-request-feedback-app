@@ -5,7 +5,6 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function getUserImageUrl(img: string) {
-  const url = `../assets/user-images${img}`;
-  return new URL(url, import.meta.url).href;
+export function getUserImageUrl(name: string) {
+  return new URL(`../assets/user-images/${name}.jpg`, import.meta.url).href;
 }
